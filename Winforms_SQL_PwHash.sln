@@ -1,0 +1,24 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Winforms_SQL_PwHash", "Winforms_SQL_PwHash.csproj", "{B5C36DF8-0C40-DCC9-B04B-7D480BAA6996}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5C36DF8-0C40-DCC9-B04B-7D480BAA6996}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5C36DF8-0C40-DCC9-B04B-7D480BAA6996}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5C36DF8-0C40-DCC9-B04B-7D480BAA6996}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5C36DF8-0C40-DCC9-B04B-7D480BAA6996}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5995891B-C15E-40F3-BDFC-2B03FCEB30A8}
+	EndGlobalSection
+EndGlobal
