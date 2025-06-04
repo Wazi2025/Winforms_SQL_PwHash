@@ -68,6 +68,8 @@ static class Program
         if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
             return;
 
+        //Note: Implement duplicate username check
+
         //Hash user's password
         string hashedPassword = HashPassword(password);
 

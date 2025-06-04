@@ -194,7 +194,9 @@ public partial class Form1 : Form
 
     void btnAddUser_Click(object sender, EventArgs e)
     {
-        //Add new User and PW into DB
+        //Note: Use a menu choice instead of a button
+
+        //Add new User and PW into DB        
         Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text);
 
         tbNewUser.Clear();
