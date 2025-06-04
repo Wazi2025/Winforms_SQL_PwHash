@@ -1,9 +1,8 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
-using System.Text;
 using WinForms_Login;
-using BCrypt.Net;
+//using BCrypt.Net;
 
 namespace WinForms;
 
@@ -20,23 +19,23 @@ static class Program
         // To customize application configuration such as set high DPI settings or default font,
         // see https://aka.ms/applicationconfiguration.
 
-        Application.EnableVisualStyles();
-        Application.SetCompatibleTextRenderingDefault(false);
+        // Application.EnableVisualStyles();
+        // Application.SetCompatibleTextRenderingDefault(false);
+        ApplicationConfiguration.Initialize();
 
         LoginForm login = new LoginForm();
         login.InitializeLoginForm();
 
         if (login.ShowDialog() == DialogResult.OK)
         {
-            //ApplicationConfiguration.Initialize();
             Application.Run(new Form1());
         }
     }
 
-    static private string HashPassword(string password)
-    {
-        return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12); // Work factor defines cost
-    }
+    // static private string HashPassword(string password)
+    // {
+    //     return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12); // Work factor defines cost
+    // }
 
     public static bool VerifyPassword(string enteredPassword, string storedHash)
     {
@@ -48,17 +47,19 @@ static class Program
     {
         using SqlConnection conn = GetFreshConnection();
 
-        // Hash password before comparing
-        string passwordHash = HashPassword(password);
-
-        string query = "SELECT COUNT(*) FROM users WHERE username = @user AND password_hash = @pass";
+        string query = "SELECT password_hash FROM users WHERE username = @user";
         using SqlCommand command = new SqlCommand(query, conn);
         command.Parameters.AddWithValue("@user", username);
-        command.Parameters.AddWithValue("@pass", passwordHash);
 
-        // int userCount = (int)command.ExecuteScalar();
-        // return userCount > 0;
-        return VerifyPassword(password, passwordHash);
+        // Get the stored hash        
+        object result = command.ExecuteScalar();
+        if (result == null || result == DBNull.Value)
+            return false;
+
+        string storedHash = result.ToString();
+
+        // Use bcrypt to verify
+        return VerifyPassword(password, storedHash);
     }
 
 
@@ -97,7 +98,9 @@ static class Program
     {
         //By using the 'using' statement we make sure the DB connection is closed down after each use
         using SqlConnection conn = GetFreshConnection();
+
         string query;
+
         //Note: Make sure we’re not building queries with user input directly(e.g., string concatenation), and instead always use parameterized queries like:
         //command.CommandText = "SELECT * FROM person WHERE first_name = @firstName";
         //command.Parameters.AddWithValue("@firstName", userInput);

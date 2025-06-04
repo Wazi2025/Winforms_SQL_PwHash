@@ -33,6 +33,7 @@ public class LoginForm : Form
 
         btnLogIn = new Button();
         btnLogIn.Text = "Login";
+        btnLogIn.FlatStyle = FlatStyle.Popup;
         btnLogIn.AutoSize = true;
 
         //Hook up event
@@ -68,13 +69,13 @@ public class LoginForm : Form
 
         if (Program.TryLogin(user, pass))
         {
-            MessageBox.Show("Login successful!");
+            MessageBox.Show("Login successful!", "Login");
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
         else
         {
-            MessageBox.Show("Invalid login. Please try again.");
+            MessageBox.Show("Invalid login. Please try again.", "Warning!");
         }
     }
 

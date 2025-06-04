@@ -1,4 +1,4 @@
-using System.Data;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WinForms;
 
@@ -27,7 +27,6 @@ public partial class Form1 : Form
     private TextBox tbWhere;
     //private GroupBox gbInsert;
 
-    //public RichTextBox rtbDataWindow;
     public DataGridView dataWindow;
 
     public void Initialize()
@@ -65,15 +64,25 @@ public partial class Form1 : Form
         lblCountry.AutoSize = true;
 
         tbFirstName = new TextBox();
+        tbFirstName.TabIndex = 0;
         tbLastName = new TextBox();
+        tbLastName.TabIndex = 1;
         tbPhone = new TextBox();
+        tbPhone.TabIndex = 2;
         tbEmail = new TextBox();
+        tbEmail.TabIndex = 3;
         tbStreet = new TextBox();
+        tbStreet.TabIndex = 4;
         tbCity = new TextBox();
+        tbCity.TabIndex = 5;
         tbZip = new TextBox();
+        tbZip.TabIndex = 6;
         tbCountry = new TextBox();
+        tbCountry.TabIndex = 7;
 
         btnInsert = new Button();
+        btnInsert.FlatStyle = FlatStyle.Popup;
+        btnInsert.TabIndex = 8;
         btnInsert.Text = "Insert";
         btnInsert.AutoSize = true;
 
@@ -94,22 +103,24 @@ public partial class Form1 : Form
         btnInsert.Click += new EventHandler(this.btnInsert_Click);
 
         btnSelect = new Button();
+        btnSelect.FlatStyle = FlatStyle.Popup;
+        btnSelect.TabIndex = 9;
         btnSelect.Text = "Select";
         btnSelect.AutoSize = true;
 
         tbWhere = new TextBox();
-
+        tbWhere.TabIndex = 10;
         //Hook up event
         btnSelect.Click += new EventHandler(this.btnSelect_Click);
 
         dataWindow = new DataGridView();
+        dataWindow.TabStop = false;
         dataWindow.Dock = DockStyle.Top;
         dataWindow.AutoSize = true;
 
         TableLayoutPanel table = new TableLayoutPanel();
 
         table.Dock = DockStyle.Fill;
-        //table.RowCount = 40;
 
         table.Controls.Add(dataWindow, 0, 0);
         table.SetColumnSpan(dataWindow, 8);
@@ -154,13 +165,8 @@ public partial class Form1 : Form
 
     void btnSelect_Click(object sender, EventArgs e)
     {
-        //Add query result to DataSource component        
-        //string whereText = tbWhere.Text;
-
+        //Add query result to DataSource component
         dataWindow.DataSource = Program.SQLSelect(tbWhere.Text);
-
-        // dataWindow.Items.Add("Jon");
-        // dataWindow.Items.Add("Petter");
     }
 
     void btnInsert_Click(object sender, EventArgs e)
@@ -199,6 +205,7 @@ public partial class Form1 : Form
     public Form1()
     {
         InitializeComponent();
+
         this.Name = "MainForm";
         this.Text = "Main";
         this.Size = new System.Drawing.Size(900, 500);
