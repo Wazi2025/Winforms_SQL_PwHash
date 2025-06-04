@@ -65,30 +65,31 @@ static class Program
 
     static public bool SQLAddUser(string username, string password)
     {
-        // if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
-        //     return true;
-
         //Duplicate username check
         string checkDuplicateUserQuery = "SELECT username FROM users WHERE username = @user";
         using SqlConnection conn = GetFreshConnection();
-        SqlCommand command = conn.CreateCommand();
-        command.CommandText = checkDuplicateUserQuery;
-        command.Parameters.AddWithValue("@user", username);
-        object uniqueUser = command.ExecuteScalar();
+        SqlCommand commandCheck = conn.CreateCommand();
+        commandCheck.CommandText = checkDuplicateUserQuery;
+        commandCheck.Parameters.AddWithValue("@user", username);
+        object uniqueUser = commandCheck.ExecuteScalar();
 
-        if (uniqueUser == null)
+        //If uniqueUser is null we know there are no duplicate usernames
+        if (uniqueUser is null)
         {
+            //Apparently using the the same SqlCommand for different parameterized query's can cause things to go pear-shaped
+            //To be safe we'll create a new one for the add new user query
+            SqlCommand commandInsert = conn.CreateCommand();
             //Hash user's password
             string hashedPassword = HashPassword(password);
 
             string query = "INSERT INTO users (username, password_hash) VALUES (@newUser, @newUserPw)";
 
-            command.CommandText = query;
-            command.Parameters.AddWithValue("@newUser", username);
-            command.Parameters.AddWithValue("@newUserPw", hashedPassword);
+            commandInsert.CommandText = query;
+            commandInsert.Parameters.AddWithValue("@newUser", username);
+            commandInsert.Parameters.AddWithValue("@newUserPw", hashedPassword);
 
             //Execute query
-            command.ExecuteNonQuery();
+            commandInsert.ExecuteNonQuery();
         }
 
         else if (uniqueUser.ToString().Equals(username))

@@ -209,6 +209,8 @@ public partial class Form1 : Form
             MessageBox.Show("A user with that name already exists. Please choose another.", "Error!");
             return;
         }
+        else
+            MessageBox.Show("New user added successfully.", "Information!");
 
         tbNewUser.Clear();
         tbNewUserPw.Clear();
