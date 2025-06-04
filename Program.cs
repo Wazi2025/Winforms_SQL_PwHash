@@ -68,7 +68,7 @@ static class Program
         //Duplicate username check
         string checkDuplicateUserQuery = "SELECT username FROM users WHERE username = @user";
         using SqlConnection conn = GetFreshConnection();
-        SqlCommand commandCheck = conn.CreateCommand();
+        using SqlCommand commandCheck = conn.CreateCommand();
         commandCheck.CommandText = checkDuplicateUserQuery;
         commandCheck.Parameters.AddWithValue("@user", username);
         object uniqueUser = commandCheck.ExecuteScalar();
@@ -105,7 +105,7 @@ static class Program
 
         string insertQuery = "INSERT INTO person (first_name, last_name, phone, email, street, city, zip_code, country) VALUES (@f_name, @l_name, @phone, @email, @street, @city, @zip, @country)";
 
-        SqlCommand command = conn.CreateCommand();
+        using SqlCommand command = conn.CreateCommand();
         command.CommandText = insertQuery;
 
         //Note: Prolly add some sort of validation here
@@ -145,7 +145,7 @@ static class Program
         else
             query = "SELECT * FROM person WHERE first_name = @firstName";
 
-        SqlCommand command = conn.CreateCommand();
+        using SqlCommand command = conn.CreateCommand();
         command.CommandText = query;
         command.Parameters.AddWithValue("@firstName", whereText);
 
