@@ -1,4 +1,5 @@
 using System.Data;
+using Microsoft.IdentityModel.Tokens;
 using WinForms;
 
 namespace WinForms_Login;
@@ -58,7 +59,6 @@ public class LoginForm : Form
         this.StartPosition = FormStartPosition.CenterScreen;
 
         //this.AutoSize = true;
-
     }
 
 
@@ -69,14 +69,12 @@ public class LoginForm : Form
 
         if (Program.TryLogin(user, pass))
         {
-            MessageBox.Show("Login successful!", "Login");
+            MessageBox.Show("Login successful!", "Information!");
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
         else
-        {
             MessageBox.Show("Invalid login. Please try again.", "Warning!");
-        }
     }
 
 

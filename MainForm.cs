@@ -196,10 +196,18 @@ public partial class Form1 : Form
     {
         //Note: Use a menu choice instead of a button
 
+        //Check for empty username/pw
+        if (tbNewUser.Text.IsNullOrEmpty() || tbNewUserPw.Text.IsNullOrEmpty())
+        {
+            MessageBox.Show("Username/Password can not be empty.", "Error!");
+            return;
+        }
+
         //Add new User and PW into DB        
         if (Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text))
         {
             MessageBox.Show("A user with that name already exists. Please choose another.", "Error!");
+            return;
         }
 
         tbNewUser.Clear();

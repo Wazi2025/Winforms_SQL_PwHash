@@ -65,8 +65,8 @@ static class Program
 
     static public bool SQLAddUser(string username, string password)
     {
-        if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
-            return true;
+        // if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
+        //     return true;
 
         //Duplicate username check
         string checkDuplicateUserQuery = "SELECT username FROM users WHERE username = @user";
