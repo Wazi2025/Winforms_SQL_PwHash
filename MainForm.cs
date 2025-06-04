@@ -24,6 +24,10 @@ public partial class Form1 : Form
     private TextBox tbCountry;
     private Button btnSelect;
     private Button btnInsert;
+
+    private Button btnAddUser;
+    private TextBox tbNewUser;
+    private TextBox tbNewUserPw;
     private TextBox tbWhere;
     //private GroupBox gbInsert;
 
@@ -31,6 +35,15 @@ public partial class Form1 : Form
 
     public void Initialize()
     {
+        //Add Insert controls
+        btnInsert = new Button();
+        btnInsert.FlatStyle = FlatStyle.Popup;
+        btnInsert.TabIndex = 8;
+        btnInsert.Text = "Insert";
+        btnInsert.AutoSize = true;
+        //Hook up event
+        btnInsert.Click += new EventHandler(this.btnInsert_Click);
+
         lblFirstName = new Label();
         lblFirstName.Text = "First name";
         lblFirstName.AutoSize = true;
@@ -80,12 +93,6 @@ public partial class Form1 : Form
         tbCountry = new TextBox();
         tbCountry.TabIndex = 7;
 
-        btnInsert = new Button();
-        btnInsert.FlatStyle = FlatStyle.Popup;
-        btnInsert.TabIndex = 8;
-        btnInsert.Text = "Insert";
-        btnInsert.AutoSize = true;
-
         // gbInsert = new GroupBox();
         // gbInsert.Text = " Insert ";
         // gbInsert.FlatStyle = FlatStyle.Flat;
@@ -99,32 +106,44 @@ public partial class Form1 : Form
         // gbInsert.Controls.Add(tbZip);
         // gbInsert.Controls.Add(tbCountry);
 
-        //Hook up event
-        btnInsert.Click += new EventHandler(this.btnInsert_Click);
-
+        //Add Select controls
         btnSelect = new Button();
         btnSelect.FlatStyle = FlatStyle.Popup;
-        btnSelect.TabIndex = 9;
+        btnSelect.TabIndex = 10;
         btnSelect.Text = "Select";
         btnSelect.AutoSize = true;
-
-        tbWhere = new TextBox();
-        tbWhere.TabIndex = 10;
         //Hook up event
         btnSelect.Click += new EventHandler(this.btnSelect_Click);
+        tbWhere = new TextBox();
+        tbWhere.TabIndex = 9;
 
+        //Add New User controls
+        btnAddUser = new Button();
+        btnAddUser.FlatStyle = FlatStyle.Popup;
+        btnAddUser.TabIndex = 13;
+        btnAddUser.Text = "Add user";
+        btnAddUser.AutoSize = true;
+        //Hook up event
+        btnAddUser.Click += new EventHandler(this.btnAddUser_Click);
+
+        tbNewUser = new TextBox();
+        tbNewUser.TabIndex = 11;
+        tbNewUserPw = new TextBox();
+        tbNewUserPw.TabIndex = 12;
+
+        //Add DataGridView
         dataWindow = new DataGridView();
         dataWindow.TabStop = false;
         dataWindow.Dock = DockStyle.Top;
         dataWindow.AutoSize = true;
 
+        //Add TableLayOutPanel
         TableLayoutPanel table = new TableLayoutPanel();
-
         table.Dock = DockStyle.Fill;
-
         table.Controls.Add(dataWindow, 0, 0);
         table.SetColumnSpan(dataWindow, 8);
 
+        //Add controls to table
         table.Controls.Add(tbFirstName, 0, 10);
         table.Controls.Add(lblFirstName, 0, 5);
 
@@ -149,10 +168,14 @@ public partial class Form1 : Form
         table.Controls.Add(tbCountry, 7, 10);
         table.Controls.Add(lblCountry, 7, 5);
 
-        table.Controls.Add(btnSelect, 0, 30);
-        table.Controls.Add(tbWhere, 1, 30);
-
         table.Controls.Add(btnInsert, 0, 20);
+
+        table.Controls.Add(btnSelect, 1, 30);
+        table.Controls.Add(tbWhere, 0, 30);
+
+        table.Controls.Add(btnAddUser, 2, 40);
+        table.Controls.Add(tbNewUser, 0, 40);
+        table.Controls.Add(tbNewUserPw, 1, 40);
 
         //table.Controls.Add(gbInsert, 1, 20);
 
@@ -167,6 +190,15 @@ public partial class Form1 : Form
     {
         //Add query result to DataSource component
         dataWindow.DataSource = Program.SQLSelect(tbWhere.Text);
+    }
+
+    void btnAddUser_Click(object sender, EventArgs e)
+    {
+        //Add new User and PW into DB
+        Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text);
+
+        tbNewUser.Clear();
+        tbNewUserPw.Clear();
     }
 
     void btnInsert_Click(object sender, EventArgs e)

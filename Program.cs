@@ -32,10 +32,10 @@ static class Program
         }
     }
 
-    // static private string HashPassword(string password)
-    // {
-    //     return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12); // Work factor defines cost
-    // }
+    static private string HashPassword(string password)
+    {
+        return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12); // Work factor defines cost
+    }
 
     public static bool VerifyPassword(string enteredPassword, string storedHash)
     {
@@ -62,6 +62,27 @@ static class Program
         return VerifyPassword(password, storedHash);
     }
 
+
+    static public void SQLAddUser(string username, string password)
+    {
+        if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
+            return;
+
+        //Hash user's password
+        string hashedPassword = HashPassword(password);
+
+        using SqlConnection conn = GetFreshConnection();
+
+        string query = "INSERT INTO users (username, password_hash) VALUES (@user, @pw)";
+
+        SqlCommand command = conn.CreateCommand();
+        command.CommandText = query;
+        command.Parameters.AddWithValue("@user", username);
+        command.Parameters.AddWithValue("@pw", hashedPassword);
+
+        //Execute query
+        command.ExecuteNonQuery();
+    }
 
     static public void SQLInsert(List<string> data)
     {
