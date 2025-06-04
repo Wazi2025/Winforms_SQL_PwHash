@@ -1,9 +1,9 @@
-using System.Security.Cryptography;
 using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using System.Text;
 using WinForms_Login;
+using BCrypt.Net;
 
 namespace WinForms;
 
@@ -35,10 +35,14 @@ static class Program
 
     static private string HashPassword(string password)
     {
-        using var sha = SHA256.Create();
-        byte[] bytes = sha.ComputeHash(Encoding.UTF8.GetBytes(password));
-        return Convert.ToBase64String(bytes);
+        return BCrypt.Net.BCrypt.HashPassword(password, workFactor: 12); // Work factor defines cost
     }
+
+    public static bool VerifyPassword(string enteredPassword, string storedHash)
+    {
+        return BCrypt.Net.BCrypt.Verify(enteredPassword, storedHash);
+    }
+
 
     static public bool TryLogin(string username, string password)
     {
@@ -52,8 +56,9 @@ static class Program
         command.Parameters.AddWithValue("@user", username);
         command.Parameters.AddWithValue("@pass", passwordHash);
 
-        int userCount = (int)command.ExecuteScalar();
-        return userCount > 0;
+        // int userCount = (int)command.ExecuteScalar();
+        // return userCount > 0;
+        return VerifyPassword(password, passwordHash);
     }
 
 
