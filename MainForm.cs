@@ -197,7 +197,10 @@ public partial class Form1 : Form
         //Note: Use a menu choice instead of a button
 
         //Add new User and PW into DB        
-        Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text);
+        if (Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text))
+        {
+            MessageBox.Show("A user with that name already exists. Please choose another.", "Error!");
+        }
 
         tbNewUser.Clear();
         tbNewUserPw.Clear();

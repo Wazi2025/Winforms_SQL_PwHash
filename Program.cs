@@ -63,27 +63,39 @@ static class Program
     }
 
 
-    static public void SQLAddUser(string username, string password)
+    static public bool SQLAddUser(string username, string password)
     {
         if (username.IsNullOrEmpty() || password.IsNullOrEmpty())
-            return;
+            return true;
 
-        //Note: Implement duplicate username check
-
-        //Hash user's password
-        string hashedPassword = HashPassword(password);
-
+        //Duplicate username check
+        string checkDuplicateUserQuery = "SELECT username FROM users WHERE username = @user";
         using SqlConnection conn = GetFreshConnection();
-
-        string query = "INSERT INTO users (username, password_hash) VALUES (@user, @pw)";
-
         SqlCommand command = conn.CreateCommand();
-        command.CommandText = query;
+        command.CommandText = checkDuplicateUserQuery;
         command.Parameters.AddWithValue("@user", username);
-        command.Parameters.AddWithValue("@pw", hashedPassword);
+        object uniqueUser = command.ExecuteScalar();
 
-        //Execute query
-        command.ExecuteNonQuery();
+        if (uniqueUser == null)
+        {
+            //Hash user's password
+            string hashedPassword = HashPassword(password);
+
+            string query = "INSERT INTO users (username, password_hash) VALUES (@newUser, @newUserPw)";
+
+            command.CommandText = query;
+            command.Parameters.AddWithValue("@newUser", username);
+            command.Parameters.AddWithValue("@newUserPw", hashedPassword);
+
+            //Execute query
+            command.ExecuteNonQuery();
+        }
+
+        else if (uniqueUser.ToString().Equals(username))
+        {
+            return true;
+        }
+        return false;
     }
 
     static public void SQLInsert(List<string> data)
