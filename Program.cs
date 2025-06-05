@@ -74,6 +74,8 @@ static class Program
         //Duplicate username check
         string checkDuplicateUserQuery = "SELECT username FROM users WHERE username = @user";
         using SqlConnection conn = GetFreshConnection();
+
+        //Add the 'using' statement to SqlCommand object since it is not guaranteed to be automatically disposed when the SqlConnection it was created from is disposed
         using SqlCommand commandCheck = conn.CreateCommand();
         commandCheck.CommandText = checkDuplicateUserQuery;
         commandCheck.Parameters.AddWithValue("@user", username);
@@ -84,7 +86,9 @@ static class Program
         {
             //Apparently using the the same SqlCommand for different parameterized query's can cause things to go pear-shaped
             //To be safe we'll create a new one for the add new user query
-            SqlCommand commandInsert = conn.CreateCommand();
+            //
+            //Again, we add the 'using' statement to SqlCommand object since it is not guaranteed to be automatically disposed when the SqlConnection it was created from is disposed
+            using SqlCommand commandInsert = conn.CreateCommand();
             //Hash user's password
             string hashedPassword = HashPassword(password);
 
@@ -146,6 +150,7 @@ static class Program
         //Note: Make sure we’re not building queries with user input directly(e.g., string concatenation), and instead always use parameterized queries like:
         //command.CommandText = "SELECT * FROM person WHERE first_name = @firstName";
         //command.Parameters.AddWithValue("@firstName", userInput);
+        //If not,  we risk SQL injection
         if (whereText.IsNullOrEmpty())
             query = "SELECT * FROM person";
         else
