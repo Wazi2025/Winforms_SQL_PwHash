@@ -2,6 +2,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.IdentityModel.Tokens;
 using System.Data;
 using WinForms_Login;
+using WinForms;
 //using BCrypt.Net;
 
 namespace WinForms;
@@ -9,7 +10,7 @@ namespace WinForms;
 static class Program
 {
     static private readonly string connectionString = "Server=localhost\\SQLEXPRESS;Database=TestDB;Trusted_Connection=True;TrustServerCertificate=true";
-
+    static private Form1 Mainform;
     /// <summary>
     ///  The main entry point for the application.
     /// </summary>
@@ -24,6 +25,7 @@ static class Program
         ApplicationConfiguration.Initialize();
 
         LoginForm login = new LoginForm();
+        Form1 Mainform = new Form1();
         login.InitializeLoginForm();
 
         if (login.ShowDialog() == DialogResult.OK)
@@ -42,6 +44,10 @@ static class Program
         return BCrypt.Net.BCrypt.Verify(enteredPassword, storedHash);
     }
 
+    public static void UserPriveligies()
+    {
+        //Set Mainform controls visibility based on user
+    }
 
     static public bool TryLogin(string username, string password)
     {

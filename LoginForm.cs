@@ -69,6 +69,8 @@ public class LoginForm : Form
 
         if (Program.TryLogin(user, pass))
         {
+            //Note: Call UserPriveligies method check here
+
             MessageBox.Show("Login successful!", "Information!");
             this.DialogResult = DialogResult.OK;
             this.Close();

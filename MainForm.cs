@@ -25,7 +25,7 @@ public partial class Form1 : Form
     private Button btnSelect;
     private Button btnInsert;
 
-    private Button btnAddUser;
+    public Button btnAddUser;
     private TextBox tbNewUser;
     private TextBox tbNewUserPw;
     private TextBox tbWhere;
