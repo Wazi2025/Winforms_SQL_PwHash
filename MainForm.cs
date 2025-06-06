@@ -1,5 +1,5 @@
 using Microsoft.IdentityModel.Tokens;
-
+using WinForms_Login;
 namespace WinForms;
 
 public partial class Form1 : Form
@@ -183,6 +183,14 @@ public partial class Form1 : Form
 
         // Add to form
         this.Controls.Add(table);
+
+        //set controls visibility based on user
+        if (!Program.UserPrivileges(LoginForm.tbUserName.Text))
+        {
+            btnAddUser.Visible = false;
+            tbNewUser.Visible = false;
+            tbNewUserPw.Visible = false;
+        }
     }
 
 

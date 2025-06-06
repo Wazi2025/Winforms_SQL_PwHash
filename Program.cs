@@ -10,7 +10,7 @@ namespace WinForms;
 static class Program
 {
     static private readonly string connectionString = "Server=localhost\\SQLEXPRESS;Database=TestDB;Trusted_Connection=True;TrustServerCertificate=true";
-    static private Form1 Mainform;
+
     /// <summary>
     ///  The main entry point for the application.
     /// </summary>
@@ -25,7 +25,6 @@ static class Program
         ApplicationConfiguration.Initialize();
 
         LoginForm login = new LoginForm();
-        Form1 Mainform = new Form1();
         login.InitializeLoginForm();
 
         if (login.ShowDialog() == DialogResult.OK)
@@ -44,9 +43,22 @@ static class Program
         return BCrypt.Net.BCrypt.Verify(enteredPassword, storedHash);
     }
 
-    public static void UserPriveligies()
+    public static bool UserPrivileges(string username)
     {
         //Set Mainform controls visibility based on user
+        string checkUserQuery = "SELECT username FROM users WHERE username = @user";
+        using SqlConnection conn = GetFreshConnection();
+        using SqlCommand commandCheck = conn.CreateCommand();
+        commandCheck.CommandText = checkUserQuery;
+        commandCheck.Parameters.AddWithValue("@user", username);
+        object uniqueUser = commandCheck.ExecuteScalar();
+
+
+        if ((uniqueUser is not null) && username.Equals("Wazi"))
+            return true;
+        else
+            return false;
+
     }
 
     static public bool TryLogin(string username, string password)

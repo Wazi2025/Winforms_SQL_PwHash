@@ -11,7 +11,7 @@ public class LoginForm : Form
     private Label lblUserName;
     private Label lblPassword;
 
-    private TextBox tbUserName;
+    static public TextBox tbUserName;
     private TextBox tbPassword;
 
     private Button btnLogIn;
@@ -69,8 +69,6 @@ public class LoginForm : Form
 
         if (Program.TryLogin(user, pass))
         {
-            //Note: Call UserPriveligies method check here
-
             MessageBox.Show("Login successful!", "Information!");
             this.DialogResult = DialogResult.OK;
             this.Close();
