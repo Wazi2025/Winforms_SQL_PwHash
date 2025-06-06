@@ -76,18 +76,4 @@ public class LoginForm : Form
         else
             MessageBox.Show("Invalid login. Please try again.", "Warning!");
     }
-
-
-
-    // public void Form()
-    // {
-    //     //InitializeComponent();
-    //     // this.Name = "LoginForm";
-    //     // this.Text = "Login";
-    //     // this.Size = new System.Drawing.Size(900, 500);
-    //     // this.StartPosition = FormStartPosition.CenterScreen;
-    //     // this.AutoSize = true;
-
-    //     //InitializeLoginForm();
-    // }
 }

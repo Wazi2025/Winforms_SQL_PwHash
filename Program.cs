@@ -53,12 +53,11 @@ static class Program
         commandCheck.Parameters.AddWithValue("@user", username);
         object uniqueUser = commandCheck.ExecuteScalar();
 
-
+        //Check for hardcoded username for now
         if ((uniqueUser is not null) && username.Equals("Wazi"))
             return true;
         else
             return false;
-
     }
 
     static public bool TryLogin(string username, string password)
@@ -79,7 +78,6 @@ static class Program
         // Use bcrypt to verify
         return VerifyPassword(password, storedHash);
     }
-
 
     static public bool SQLAddUser(string username, string password)
     {
@@ -162,7 +160,7 @@ static class Program
         //Note: Make sure we’re not building queries with user input directly(e.g., string concatenation), and instead always use parameterized queries like:
         //command.CommandText = "SELECT * FROM person WHERE first_name = @firstName";
         //command.Parameters.AddWithValue("@firstName", userInput);
-        //If not,  we risk SQL injection
+        //If not, we risk SQL injection
         if (whereText.IsNullOrEmpty())
             query = "SELECT * FROM person";
         else

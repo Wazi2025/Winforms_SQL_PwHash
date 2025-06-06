@@ -24,12 +24,10 @@ public partial class Form1 : Form
     private TextBox tbCountry;
     private Button btnSelect;
     private Button btnInsert;
-
     private Button btnAddUser;
     private TextBox tbNewUser;
     private TextBox tbNewUserPw;
     private TextBox tbWhere;
-    //private GroupBox gbInsert;
 
     private DataGridView dataWindow;
 
@@ -184,6 +182,7 @@ public partial class Form1 : Form
     private void InitializeUserPrivileges()
     {
         //set controls visibility based on user
+        //Note: Prolly a better idea to simply not create the controls
         if (!Program.UserPrivileges(LoginForm.tbUserName.Text))
         {
             btnAddUser.Visible = false;
