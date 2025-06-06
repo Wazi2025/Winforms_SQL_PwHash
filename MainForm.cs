@@ -262,7 +262,7 @@ public partial class Form1 : Form
         this.Text = "Main";
         this.Size = new System.Drawing.Size(900, 500);
         this.StartPosition = FormStartPosition.CenterScreen;
-        this.AutoSize = true;
+        this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
 
         InitializeInsertControls();
         InitializeSelectControls();

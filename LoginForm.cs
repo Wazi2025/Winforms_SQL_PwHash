@@ -56,6 +56,7 @@ public class LoginForm : Form
         // Add to form
         this.Controls.Add(loginTable);
         this.Text = "Login";
+        this.Width = 400;
         this.StartPosition = FormStartPosition.CenterScreen;
 
         //this.AutoSize = true;
