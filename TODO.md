@@ -4,9 +4,8 @@ A more advanced version of the Winforms project using a login window and the abi
 
 ### In progress
 
-- [ ] Implement user privileges
-
 ### Completed ✓
 
 - [x] Salt & hashing of passwords
 - [x] User login feature
+- [x] Implement user privileges

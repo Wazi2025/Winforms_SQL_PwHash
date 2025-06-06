@@ -25,15 +25,15 @@ public partial class Form1 : Form
     private Button btnSelect;
     private Button btnInsert;
 
-    public Button btnAddUser;
+    private Button btnAddUser;
     private TextBox tbNewUser;
     private TextBox tbNewUserPw;
     private TextBox tbWhere;
     //private GroupBox gbInsert;
 
-    public DataGridView dataWindow;
+    private DataGridView dataWindow;
 
-    public void Initialize()
+    private void InitializeInsertControls()
     {
         //Add Insert controls
         btnInsert = new Button();
@@ -92,20 +92,10 @@ public partial class Form1 : Form
         tbZip.TabIndex = 6;
         tbCountry = new TextBox();
         tbCountry.TabIndex = 7;
+    }
 
-        // gbInsert = new GroupBox();
-        // gbInsert.Text = " Insert ";
-        // gbInsert.FlatStyle = FlatStyle.Flat;
-        // gbInsert.Controls.Add(btnInsert);
-        // gbInsert.Controls.Add(tbFirstName);
-        // gbInsert.Controls.Add(tbLastName);
-        // gbInsert.Controls.Add(tbPhone);
-        // gbInsert.Controls.Add(tbEmail);
-        // gbInsert.Controls.Add(tbStreet);
-        // gbInsert.Controls.Add(tbCity);
-        // gbInsert.Controls.Add(tbZip);
-        // gbInsert.Controls.Add(tbCountry);
-
+    private void InitializeSelectControls()
+    {
         //Add Select controls
         btnSelect = new Button();
         btnSelect.FlatStyle = FlatStyle.Popup;
@@ -116,7 +106,10 @@ public partial class Form1 : Form
         btnSelect.Click += new EventHandler(this.btnSelect_Click);
         tbWhere = new TextBox();
         tbWhere.TabIndex = 9;
+    }
 
+    private void InitializeNewUserControls()
+    {
         //Add New User controls
         btnAddUser = new Button();
         btnAddUser.FlatStyle = FlatStyle.Popup;
@@ -130,13 +123,19 @@ public partial class Form1 : Form
         tbNewUser.TabIndex = 11;
         tbNewUserPw = new TextBox();
         tbNewUserPw.TabIndex = 12;
+    }
 
+    private void InitializeDataGrid()
+    {
         //Add DataGridView
         dataWindow = new DataGridView();
         dataWindow.TabStop = false;
         dataWindow.Dock = DockStyle.Top;
         dataWindow.AutoSize = true;
+    }
 
+    private void InitializeTable()
+    {
         //Add TableLayOutPanel
         TableLayoutPanel table = new TableLayoutPanel();
         table.Dock = DockStyle.Fill;
@@ -177,13 +176,13 @@ public partial class Form1 : Form
         table.Controls.Add(tbNewUser, 0, 40);
         table.Controls.Add(tbNewUserPw, 1, 40);
 
-        //table.Controls.Add(gbInsert, 1, 20);
-
         table.AutoSize = true;
 
         // Add to form
         this.Controls.Add(table);
-
+    }
+    private void InitializeUserPrivileges()
+    {
         //set controls visibility based on user
         if (!Program.UserPrivileges(LoginForm.tbUserName.Text))
         {
@@ -192,7 +191,6 @@ public partial class Form1 : Form
             tbNewUserPw.Visible = false;
         }
     }
-
 
     void btnSelect_Click(object sender, EventArgs e)
     {
@@ -267,6 +265,12 @@ public partial class Form1 : Form
         this.StartPosition = FormStartPosition.CenterScreen;
         this.AutoSize = true;
 
-        Initialize();
+        InitializeInsertControls();
+        InitializeSelectControls();
+        InitializeInsertControls();
+        InitializeNewUserControls();
+        InitializeDataGrid();
+        InitializeTable();
+        InitializeUserPrivileges();
     }
 }
