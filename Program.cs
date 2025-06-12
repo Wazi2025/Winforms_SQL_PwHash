@@ -63,6 +63,7 @@ static class Program
     static public void LogUserLogin(string username, string password, string messageBoxLoginText)
     {
         //log user login attempts in file
+
         string fileDataDir = "Data";
         string fileName = "log.txt";
 
@@ -75,7 +76,7 @@ static class Program
         DateTime dateTime = DateTime.Now;
         string logString = $"{dateTime.ToString()}:  Username:'{username}'  Message:'{messageBoxLoginText}'";
 
-        //Create file if it does not exist
+        //Create file and dir if it does not exist
         if (!File.Exists(filePath))
         {
             using StreamWriter streamWriter = File.CreateText(filePath);
