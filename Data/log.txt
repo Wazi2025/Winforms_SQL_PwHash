@@ -1,0 +1,4 @@
+12.06.2025 13:12:12:  Username:Wazi  Password:test  Message:Login successful!
+12.06.2025 13:13:06:  Username:Wazi  Password:pw  Message:Invalid login. Please try again.
+12.06.2025 13:14:36:  Username:'User'  Password:'bfjkw'  Message:'Invalid login. Please try again.'
+12.06.2025 13:15:15:  Username:'Wazi'  Password:'test'  Message:'Login successful!'

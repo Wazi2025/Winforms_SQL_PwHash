@@ -4,6 +4,9 @@ A more advanced version of the Winforms project using a login window and the abi
 
 ### In progress
 
+- [] Implement UPDATE feature
+- [] Implement login attempts (logfile)
+
 ### Completed ✓
 
 - [x] Salt & hashing of passwords

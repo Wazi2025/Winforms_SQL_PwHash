@@ -60,6 +60,35 @@ static class Program
             return false;
     }
 
+    static public void LogUserLogin(string username, string password, string messageBoxLoginText)
+    {
+        //log user login attempts in file
+        string fileDataDir = "Data";
+        string fileName = "log.txt";
+
+        //Set the application path
+        string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
+
+        //Combine application path with where the csv file is (\Data\scrubbed.csv)
+        //Should eliminate hardcoding of file path as long as it's in the \Data dir with the compiled .exe a level above
+        string filePath = Path.Combine(projectRoot, fileDataDir, fileName);
+        DateTime dateTime = DateTime.Now;
+        string logString = $"{dateTime.ToString()}:  Username:'{username}'  Message:'{messageBoxLoginText}'";
+
+        //Create file if it does not exist
+        if (!File.Exists(filePath))
+        {
+            using StreamWriter streamWriter = File.CreateText(filePath);
+            streamWriter.WriteLine(logString);
+        }
+        else //Append to already existing file
+        {
+            using StreamWriter streamWriter = File.AppendText(filePath);
+            streamWriter.WriteLine(logString);
+            //streamWriter.WriteLine($"{dateTime.ToString()}:  {username}  {password} : {messageBoxLoginText}");
+        }
+
+    }
     static public bool TryLogin(string username, string password)
     {
         using SqlConnection conn = GetFreshConnection();

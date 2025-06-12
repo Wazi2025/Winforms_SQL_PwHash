@@ -67,14 +67,22 @@ public class LoginForm : Form
     {
         string user = tbUserName.Text.Trim();
         string pass = tbPassword.Text;
+        string messageBoxLoginText = "";
 
         if (Program.TryLogin(user, pass))
         {
-            MessageBox.Show("Login successful!", "Information!");
+            messageBoxLoginText = "Login successful!";
+            MessageBox.Show($"{messageBoxLoginText}", "Information!");
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
         else
-            MessageBox.Show("Invalid login. Please try again.", "Warning!");
+        {
+            messageBoxLoginText = "Invalid login. Please try again.";
+            MessageBox.Show($"{messageBoxLoginText}", "Warning!");
+        }
+
+        //Log user attempt login
+        Program.LogUserLogin(user, pass, messageBoxLoginText);
     }
 }
