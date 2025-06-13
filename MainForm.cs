@@ -1,5 +1,6 @@
 using Microsoft.IdentityModel.Tokens;
 using WinForms_Login;
+
 namespace WinForms;
 
 public partial class Form1 : Form
@@ -237,40 +238,37 @@ public partial class Form1 : Form
     void btnInsert_Click(object sender, EventArgs e)
     {
         bool fieldValidated = true;
+        string warning = "Warning!";
+        string warningMessage = "cannot be empty.";
 
         //Add field validation for FirstName, LastName and Email (the only not null DB columns)
         if (tbFirstName.Text.IsNullOrEmpty())
         {
             tbFirstName.Focus();
             fieldValidated = false;
-            MessageBox.Show($"Field '{lblFirstName.Text}' cannot be empty", "Warning!");
+            MessageBox.Show($"Field '{lblFirstName.Text}' {warningMessage}", warning);
         }
         else
         if (tbLastName.Text.IsNullOrEmpty())
         {
             tbLastName.Focus();
             fieldValidated = false;
-            MessageBox.Show($"Field '{lblLastName.Text}' cannot be empty", "Warning!");
+            MessageBox.Show($"Field '{lblLastName.Text}' {warningMessage}", warning);
         }
         else
         if (tbEmail.Text.IsNullOrEmpty())
         {
             tbEmail.Focus();
             fieldValidated = false;
-            MessageBox.Show($"Field '{lblEmail.Text}' cannot be empty", "Warning!");
+            MessageBox.Show($"Field '{lblEmail.Text}' {warningMessage}", warning);
         }
-
-        List<string> data = new List<string>();
-
-        //Add values from TextBoxes to List
-        data.Add(tbFirstName.Text);
-        data.Add(tbLastName.Text);
-        data.Add(tbPhone.Text);
-        data.Add(tbEmail.Text);
-        data.Add(tbStreet.Text);
-        data.Add(tbCity.Text);
-        data.Add(tbZip.Text);
-        data.Add(tbCountry.Text);
+        //Add rudimentary email syntax check
+        // if (!tbEmail.Text.Contains("@"))
+        // {
+        //     tbEmail.Focus();
+        //     fieldValidated = false;
+        //     MessageBox.Show($"Not a valid {lblEmail.Text} format.", warning);
+        // }
 
         // if (data.Contains(""))
         // {
@@ -278,12 +276,23 @@ public partial class Form1 : Form
         //     return;
         // }
 
-
-        //Send TextBox values as parameters to SQLInsert method
-        Program.SQLInsert(data);
-
         if (fieldValidated)
         {
+            List<string> data = new List<string>();
+
+            //Add values from TextBoxes to List
+            data.Add(tbFirstName.Text);
+            data.Add(tbLastName.Text);
+            data.Add(tbPhone.Text);
+            data.Add(tbEmail.Text);
+            data.Add(tbStreet.Text);
+            data.Add(tbCity.Text);
+            data.Add(tbZip.Text);
+            data.Add(tbCountry.Text);
+
+            //Send TextBox values as parameters to SQLInsert method
+            Program.SQLInsert(data);
+
             tbFirstName.Clear();
             tbLastName.Clear();
             tbPhone.Clear();
@@ -292,6 +301,8 @@ public partial class Form1 : Form
             tbCity.Clear();
             tbZip.Clear();
             tbCountry.Clear();
+
+            MessageBox.Show("Record inserted.", "Information!");
         }
     }
 
