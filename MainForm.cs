@@ -241,7 +241,7 @@ public partial class Form1 : Form
         string warning = "Warning!";
         string warningMessage = "cannot be empty.";
 
-        //Add field validation for FirstName, LastName and Email (the only not null DB columns)
+        //Add field validation for FirstName, LastName and Email (the only not null and empty string constraint DB columns)
         if (tbFirstName.Text.IsNullOrEmpty())
         {
             tbFirstName.Focus();
@@ -270,12 +270,6 @@ public partial class Form1 : Form
         //     MessageBox.Show($"Not a valid {lblEmail.Text} format.", warning);
         // }
 
-        // if (data.Contains(""))
-        // {
-        //     MessageBox.Show("Fields cannot be empty!", "Warning");
-        //     return;
-        // }
-
         if (fieldValidated)
         {
             List<string> data = new List<string>();
@@ -289,6 +283,12 @@ public partial class Form1 : Form
             data.Add(tbCity.Text);
             data.Add(tbZip.Text);
             data.Add(tbCountry.Text);
+
+            // for (int i = 0; i < data.Capacity; i++)
+            // {
+            //     if (String.IsNullOrEmpty(data[i]))
+            //         data[i] = "NULL";
+            // }
 
             //Send TextBox values as parameters to SQLInsert method
             Program.SQLInsert(data);
