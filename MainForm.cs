@@ -43,11 +43,11 @@ public partial class Form1 : Form
         btnInsert.Click += new EventHandler(this.btnInsert_Click);
 
         lblFirstName = new Label();
-        lblFirstName.Text = "First name";
+        lblFirstName.Text = "First Name";
         lblFirstName.AutoSize = true;
 
         lblLastName = new Label();
-        lblLastName.Text = "Last name";
+        lblLastName.Text = "Last Name";
         lblLastName.AutoSize = true;
 
         lblPhone = new Label();
@@ -76,6 +76,11 @@ public partial class Form1 : Form
 
         tbFirstName = new TextBox();
         tbFirstName.TabIndex = 0;
+
+        //Hook up Validating event
+        tbFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.tbFirstName_Validating);
+
+
         tbLastName = new TextBox();
         tbLastName.TabIndex = 1;
         tbPhone = new TextBox();
@@ -197,6 +202,14 @@ public partial class Form1 : Form
         dataWindow.DataSource = Program.SQLSelect(tbWhere.Text);
     }
 
+    void tbFirstName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
+    {
+        if (tbFirstName.Text.IsNullOrEmpty())
+        {
+            //MessageBox.Show("Field cannot be empty!", "Warning!");
+            //tbFirstName.Focus();
+        }
+    }
     void btnAddUser_Click(object sender, EventArgs e)
     {
         //Note: Use a menu choice instead of a button
@@ -223,6 +236,30 @@ public partial class Form1 : Form
 
     void btnInsert_Click(object sender, EventArgs e)
     {
+        bool fieldValidated = true;
+
+        //Add field validation for FirstName, LastName and Email (the only not null DB columns)
+        if (tbFirstName.Text.IsNullOrEmpty())
+        {
+            tbFirstName.Focus();
+            fieldValidated = false;
+            MessageBox.Show($"Field '{lblFirstName.Text}' cannot be empty", "Warning!");
+        }
+        else
+        if (tbLastName.Text.IsNullOrEmpty())
+        {
+            tbLastName.Focus();
+            fieldValidated = false;
+            MessageBox.Show($"Field '{lblLastName.Text}' cannot be empty", "Warning!");
+        }
+        else
+        if (tbEmail.Text.IsNullOrEmpty())
+        {
+            tbEmail.Focus();
+            fieldValidated = false;
+            MessageBox.Show($"Field '{lblEmail.Text}' cannot be empty", "Warning!");
+        }
+
         List<string> data = new List<string>();
 
         //Add values from TextBoxes to List
@@ -235,23 +272,27 @@ public partial class Form1 : Form
         data.Add(tbZip.Text);
         data.Add(tbCountry.Text);
 
-        if (data.Contains(""))
-        {
-            MessageBox.Show("Fields cannot be empty!", "Warning");
-            return;
-        }
+        // if (data.Contains(""))
+        // {
+        //     MessageBox.Show("Fields cannot be empty!", "Warning");
+        //     return;
+        // }
+
 
         //Send TextBox values as parameters to SQLInsert method
         Program.SQLInsert(data);
 
-        tbFirstName.Clear();
-        tbLastName.Clear();
-        tbPhone.Clear();
-        tbEmail.Clear();
-        tbStreet.Clear();
-        tbCity.Clear();
-        tbZip.Clear();
-        tbCountry.Clear();
+        if (fieldValidated)
+        {
+            tbFirstName.Clear();
+            tbLastName.Clear();
+            tbPhone.Clear();
+            tbEmail.Clear();
+            tbStreet.Clear();
+            tbCity.Clear();
+            tbZip.Clear();
+            tbCountry.Clear();
+        }
     }
 
     public Form1()
