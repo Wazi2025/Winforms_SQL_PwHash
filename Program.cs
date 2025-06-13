@@ -70,8 +70,6 @@ static class Program
         //Set the application path
         string projectRoot = Directory.GetParent(AppContext.BaseDirectory).Parent.Parent.Parent.FullName;
 
-        //Combine application path with where the csv file is (\Data\scrubbed.csv)
-        //Should eliminate hardcoding of file path as long as it's in the \Data dir with the compiled .exe a level above
         string filePath = Path.Combine(projectRoot, fileDataDir, fileName);
         string dirPath = Path.Combine(projectRoot, fileDataDir);
         DateTime dateTime = DateTime.Now;
