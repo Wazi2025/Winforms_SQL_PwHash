@@ -73,12 +73,14 @@ static class Program
         //Combine application path with where the csv file is (\Data\scrubbed.csv)
         //Should eliminate hardcoding of file path as long as it's in the \Data dir with the compiled .exe a level above
         string filePath = Path.Combine(projectRoot, fileDataDir, fileName);
+        string dirPath = Path.Combine(projectRoot, fileDataDir);
         DateTime dateTime = DateTime.Now;
         string logString = $"{dateTime.ToString()}:  Username:'{username}'  Message:'{messageBoxLoginText}'";
 
         //Create file and dir if it does not exist
-        if (!File.Exists(filePath))
+        if (!File.Exists(filePath) || !Directory.Exists(dirPath))
         {
+            Directory.CreateDirectory(dirPath);
             using StreamWriter streamWriter = File.CreateText(filePath);
             streamWriter.WriteLine(logString);
         }
