@@ -84,6 +84,7 @@ public class LoginForm : Form
         string user = tbUserName.Text.Trim();
         string pass = tbPassword.Text;
         string messageBoxLoginText;
+        string dbType = "";
 
         const string loginSuccess = "Login successful!";
         const string loginFail = "Invalid login. Please try again.";
@@ -93,8 +94,11 @@ public class LoginForm : Form
         if (Program.SQL_serverDBConnection())
         {
             //Microsoft SQL Server
+            dbType = "MS SQL";
+
             if (Program.TryLogin(user, pass))
             {
+
                 messageBoxLoginText = loginSuccess;
                 MessageBox.Show($"{messageBoxLoginText}", $"{information}");
                 this.DialogResult = DialogResult.OK;
@@ -109,8 +113,11 @@ public class LoginForm : Form
         else
         {
             //PostgreSQL
+            dbType = "PostgreSQL";
+
             if (Program.TryLogin_Postgres(user, pass))
             {
+
                 messageBoxLoginText = loginSuccess;
                 MessageBox.Show($"{messageBoxLoginText}", $"{information}");
                 this.DialogResult = DialogResult.OK;
@@ -124,6 +131,6 @@ public class LoginForm : Form
         }
 
         //Log user attempt login
-        Program.LogUserLogin(user, pass, messageBoxLoginText);
+        Program.LogUserLogin(user, pass, messageBoxLoginText, dbType);
     }
 }

@@ -41,14 +41,14 @@ static class Program
         {
             //Microsoft SQL
             //Local Dockerized SQL Server connection string
-            connectionString = "Server=localhost,1433;Database=TestDB;User Id=sa;Password=YourStrong@Pass!;TrustServerCertificate=True;";
+            connectionString = "Server=localhost,1433;Database=TestDBMS;User Id=sa;Password=Admin1234#;TrustServerCertificate=True;";
             return true;
         }
         else
         {
             //PostgreSQL
             //Local Dockerized PostgreSQL connection string            
-            connectionString = "host=localhost;Port=5432;Database=vectordbtest;Username=admin;Password=1234";
+            connectionString = "host=localhost;Port=5432;Database=TestDB;Username=admin;Password=1234";
             return false;
         }
     }
@@ -81,7 +81,7 @@ static class Program
             return false;
     }
 
-    static public void LogUserLogin(string username, string password, string messageBoxLoginText)
+    static public void LogUserLogin(string username, string password, string messageBoxLoginText, string dbType)
     {
         //log user login attempts in file
         string fileDataDir = "Data";
@@ -93,7 +93,7 @@ static class Program
         string filePath = Path.Combine(projectRoot, fileDataDir, fileName);
         string dirPath = Path.Combine(projectRoot, fileDataDir);
         DateTime dateTime = DateTime.Now;
-        string logString = $"{dateTime.ToString()}:  Username:'{username}'  Message:'{messageBoxLoginText}'";
+        string logString = $"{dateTime.ToString()}:  Username:'{username}'  Message:'{messageBoxLoginText}' Type:'{dbType}'";
 
         //Create file and dir if it does not exist
         if (!File.Exists(filePath) || !Directory.Exists(dirPath))

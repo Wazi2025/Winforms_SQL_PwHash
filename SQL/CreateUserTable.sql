@@ -1,5 +1,5 @@
-
-use TestDB
+CREATE DATABASE TestDBMS
+use TestDBMS
 CREATE TABLE users (
     user_id INT IDENTITY(1,1) PRIMARY KEY,
     username NVARCHAR(50) NOT NULL UNIQUE,

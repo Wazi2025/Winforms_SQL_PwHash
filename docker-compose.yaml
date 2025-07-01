@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=TestDB
+    volumes:
+      - ./postgres:/data
+      - ./postgres:/backups
+  pgAdmin:
+    image: dpage/pgadmin4:latest
+    restart: always
+    ports:
+      - 5050:80
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=test@test.com
+      - PGADMIN_DEFAULT_PASSWORD=1234
+    volumes:
+      - ./pgAdmin:/pgAdmin
+      - ./pgAdmin:/backups
+
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver2022
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Admin1234#"
+      MSSQL_PID: "Express" # or Express
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
+volumes:
+  postgres:
+  pgAdmin:
+  sqlvolume:
