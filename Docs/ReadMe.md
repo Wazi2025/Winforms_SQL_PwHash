@@ -2,6 +2,12 @@
 
 # Project "Winforms_SQL_PwHash"
 
-This is a more advanced version using a login window and the ability to add more users based on user credentials (hard coded for now).<br> Includes bCrypt for salting and hashing of passwords.
+This is a more advanced version using a login window and the ability to add more users based on user credentials (hard coded for now).<br>
 
-You will also need to add a 'user' table to the DB using the enclosed CreateUserTable.sql
+## Includes
+
+- Salting & hashing of passwords
+- User login feature
+- User privileges
+- Login attempts (logfile)
+- PostgreSQL support
