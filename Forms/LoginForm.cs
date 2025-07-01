@@ -15,6 +15,7 @@ public class LoginForm : Form
     private TextBox tbPassword;
 
     private Button btnLogIn;
+    private ComboBox cbDBType;
 
 
     public void InitializeLoginForm()
@@ -37,6 +38,14 @@ public class LoginForm : Form
         btnLogIn.FlatStyle = FlatStyle.Popup;
         btnLogIn.AutoSize = true;
 
+        cbDBType = new ComboBox();
+        cbDBType.Items.AddRange(new object[] { "SQL Server", "PostgreSQL" });
+        cbDBType.SelectedIndex = 0;
+
+        //Hook up event
+        cbDBType.SelectedIndexChanged +=
+           new System.EventHandler(cbDBType_SelectedIndexChanged);
+
         //Hook up event
         btnLogIn.Click += new EventHandler(this.btnLogin_Click);
 
@@ -50,36 +59,68 @@ public class LoginForm : Form
         loginTable.Controls.Add(tbPassword, 0, 25);
 
         loginTable.Controls.Add(btnLogIn, 0, 30);
+        loginTable.Controls.Add(cbDBType, 0, 40);
 
         loginTable.AutoSize = true;
 
         // Add to form
         this.Controls.Add(loginTable);
         this.Text = "Login";
-        this.Width = 400;
+        this.Width = 600;
         this.StartPosition = FormStartPosition.CenterScreen;
 
         //this.AutoSize = true;
     }
 
-
+    private void cbDBType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (cbDBType.SelectedIndex == 0)
+            Program.MicrosoftSqlConnection = true;
+        else
+            Program.MicrosoftSqlConnection = false;
+    }
     private void btnLogin_Click(object sender, EventArgs e)
     {
         string user = tbUserName.Text.Trim();
         string pass = tbPassword.Text;
-        string messageBoxLoginText = "";
+        string messageBoxLoginText;
 
-        if (Program.TryLogin(user, pass))
+        const string loginSuccess = "Login successful!";
+        const string loginFail = "Invalid login. Please try again.";
+        const string information = "Information!";
+        const string warning = "Warning!";
+
+        if (Program.SQL_serverDBConnection())
         {
-            messageBoxLoginText = "Login successful!";
-            MessageBox.Show($"{messageBoxLoginText}", "Information!");
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            //Microsoft SQL Server
+            if (Program.TryLogin(user, pass))
+            {
+                messageBoxLoginText = loginSuccess;
+                MessageBox.Show($"{messageBoxLoginText}", $"{information}");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                messageBoxLoginText = loginFail;
+                MessageBox.Show($"{messageBoxLoginText}", $"{warning}");
+            }
         }
         else
         {
-            messageBoxLoginText = "Invalid login. Please try again.";
-            MessageBox.Show($"{messageBoxLoginText}", "Warning!");
+            //PostgreSQL
+            if (Program.TryLogin_Postgres(user, pass))
+            {
+                messageBoxLoginText = loginSuccess;
+                MessageBox.Show($"{messageBoxLoginText}", $"{information}");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                messageBoxLoginText = loginFail;
+                MessageBox.Show($"{messageBoxLoginText}", $"{warning}");
+            }
         }
 
         //Log user attempt login

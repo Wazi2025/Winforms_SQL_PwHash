@@ -7,6 +7,10 @@ public partial class Form1 : Form
 {
     //Add fields to the Form class so we can access them directly instead of having to iterate
     //through the Form's controls
+    private Label lblFirstNameSelect;
+    private Label lblLastNameSelect;
+    private Label lblUsername;
+    private Label lblPassword;
     private Label lblFirstName;
     private Label lblLastName;
     private Label lblPhone;
@@ -28,7 +32,8 @@ public partial class Form1 : Form
     private Button btnAddUser;
     private TextBox tbNewUser;
     private TextBox tbNewUserPw;
-    private TextBox tbWhere;
+    private TextBox tbWhereFName;
+    private TextBox tbWhereLName;
 
     private DataGridView dataWindow;
 
@@ -79,7 +84,7 @@ public partial class Form1 : Form
         tbFirstName.TabIndex = 0;
 
         //Hook up Validating event
-        tbFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.tbFirstName_Validating);
+        //tbFirstName.Validating += new System.ComponentModel.CancelEventHandler(this.tbFirstName_Validating);
 
 
         tbLastName = new TextBox();
@@ -103,13 +108,24 @@ public partial class Form1 : Form
         //Add Select controls
         btnSelect = new Button();
         btnSelect.FlatStyle = FlatStyle.Popup;
-        btnSelect.TabIndex = 10;
+        btnSelect.TabIndex = 11;
         btnSelect.Text = "Select";
         btnSelect.AutoSize = true;
         //Hook up event
         btnSelect.Click += new EventHandler(this.btnSelect_Click);
-        tbWhere = new TextBox();
-        tbWhere.TabIndex = 9;
+
+        lblFirstNameSelect = new Label();
+        lblFirstNameSelect.Text = "First name";
+        lblFirstNameSelect.AutoSize = true;
+
+        lblLastNameSelect = new Label();
+        lblLastNameSelect.Text = "Last name";
+        lblLastNameSelect.AutoSize = true;
+
+        tbWhereFName = new TextBox();
+        tbWhereFName.TabIndex = 9;
+        tbWhereLName = new TextBox();
+        tbWhereLName.TabIndex = 10;
     }
 
     private void InitializeNewUserControls()
@@ -117,16 +133,23 @@ public partial class Form1 : Form
         //Add New User controls
         btnAddUser = new Button();
         btnAddUser.FlatStyle = FlatStyle.Popup;
-        btnAddUser.TabIndex = 13;
+        btnAddUser.TabIndex = 14;
         btnAddUser.Text = "Add user";
         btnAddUser.AutoSize = true;
         //Hook up event
         btnAddUser.Click += new EventHandler(this.btnAddUser_Click);
 
+        lblUsername = new Label();
+        lblUsername.Text = "Username:";
+        lblUsername.AutoSize = true;
+        lblPassword = new Label();
+        lblPassword.Text = "Password:";
+        lblPassword.AutoSize = true;
+
         tbNewUser = new TextBox();
-        tbNewUser.TabIndex = 11;
+        tbNewUser.TabIndex = 12;
         tbNewUserPw = new TextBox();
-        tbNewUserPw.TabIndex = 12;
+        tbNewUserPw.TabIndex = 13;
     }
 
     private void InitializeDataGrid()
@@ -173,12 +196,17 @@ public partial class Form1 : Form
 
         table.Controls.Add(btnInsert, 0, 20);
 
-        table.Controls.Add(btnSelect, 1, 30);
-        table.Controls.Add(tbWhere, 0, 30);
+        table.Controls.Add(btnSelect, 2, 50);
+        table.Controls.Add(tbWhereFName, 0, 50);
+        table.Controls.Add(tbWhereLName, 1, 50);
+        table.Controls.Add(lblFirstNameSelect, 0, 40);
+        table.Controls.Add(lblLastNameSelect, 1, 40);
 
-        table.Controls.Add(btnAddUser, 2, 40);
-        table.Controls.Add(tbNewUser, 0, 40);
-        table.Controls.Add(tbNewUserPw, 1, 40);
+        table.Controls.Add(btnAddUser, 2, 70);
+        table.Controls.Add(lblUsername, 0, 60);
+        table.Controls.Add(tbNewUser, 0, 70);
+        table.Controls.Add(lblPassword, 0, 60);
+        table.Controls.Add(tbNewUserPw, 1, 70);
 
         table.AutoSize = true;
 
@@ -189,28 +217,43 @@ public partial class Form1 : Form
     {
         //set controls visibility based on user
         //Note: Prolly a better idea to simply not create the controls
-        if (!Program.UserPrivileges(LoginForm.tbUserName.Text))
+        if (Program.MicrosoftSqlConnection)
         {
-            btnAddUser.Visible = false;
-            tbNewUser.Visible = false;
-            tbNewUserPw.Visible = false;
+            if (!Program.UserPrivileges(LoginForm.tbUserName.Text))
+            {
+                btnAddUser.Visible = false;
+                tbNewUser.Visible = false;
+                tbNewUserPw.Visible = false;
+
+                lblUsername.Visible = false;
+                lblPassword.Visible = false;
+            }
+        }
+        else
+        //PostgreSQL
+        {
+            if (!Program.UserPrivileges_Postgres(LoginForm.tbUserName.Text))
+            {
+                btnAddUser.Visible = false;
+                tbNewUser.Visible = false;
+                tbNewUserPw.Visible = false;
+
+                lblUsername.Visible = false;
+                lblPassword.Visible = false;
+            }
         }
     }
 
     void btnSelect_Click(object sender, EventArgs e)
     {
         //Add query result to DataSource component
-        dataWindow.DataSource = Program.SQLSelect(tbWhere.Text);
+        if (Program.MicrosoftSqlConnection)
+            dataWindow.DataSource = Program.SQLSelect(tbWhereFName.Text, tbWhereLName.Text);
+        else
+            dataWindow.DataSource = Program.SQLSelect_Postgres(tbWhereFName.Text, tbWhereLName.Text);
     }
 
-    void tbFirstName_Validating(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        if (tbFirstName.Text.IsNullOrEmpty())
-        {
-            //MessageBox.Show("Field cannot be empty!", "Warning!");
-            //tbFirstName.Focus();
-        }
-    }
+
     void btnAddUser_Click(object sender, EventArgs e)
     {
         //Note: Use a menu choice instead of a button
@@ -222,14 +265,29 @@ public partial class Form1 : Form
             return;
         }
 
-        //Add new User and PW into DB        
-        if (Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text))
+        if (Program.MicrosoftSqlConnection)
         {
-            MessageBox.Show("A user with that name already exists. Please choose another.", "Error!");
-            return;
+            //Add new User and PW into DB        
+            if (Program.SQLAddUser(tbNewUser.Text, tbNewUserPw.Text))
+            {
+                MessageBox.Show("A user with that name already exists. Please choose another.", "Error!");
+                return;
+            }
+            else
+                MessageBox.Show("New user added successfully.", "Information!");
         }
         else
-            MessageBox.Show("New user added successfully.", "Information!");
+        {
+            //PostgreSQL
+            //Add new User and PW into DB        
+            if (Program.SQLAddUser_Postgres(tbNewUser.Text, tbNewUserPw.Text))
+            {
+                MessageBox.Show("A user with that name already exists. Please choose another.", "Error!");
+                return;
+            }
+            else
+                MessageBox.Show("New user added successfully.", "Information!");
+        }
 
         tbNewUser.Clear();
         tbNewUserPw.Clear();
@@ -284,14 +342,11 @@ public partial class Form1 : Form
             data.Add(tbZip.Text);
             data.Add(tbCountry.Text);
 
-            // for (int i = 0; i < data.Capacity; i++)
-            // {
-            //     if (String.IsNullOrEmpty(data[i]))
-            //         data[i] = "NULL";
-            // }
-
-            //Send TextBox values as parameters to SQLInsert method
-            Program.SQLInsert(data);
+            if (Program.MicrosoftSqlConnection)
+                //Send TextBox values as parameters to SQLInsert method
+                Program.SQLInsert(data);
+            else
+                Program.SQLInsert_Postgres(data);
 
             tbFirstName.Clear();
             tbLastName.Clear();
@@ -312,9 +367,9 @@ public partial class Form1 : Form
 
         this.Name = "MainForm";
         this.Text = "Main";
-        this.Size = new System.Drawing.Size(900, 500);
+        //this.Size = new System.Drawing.Size(900, 500);
         this.StartPosition = FormStartPosition.CenterScreen;
-        this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+        this.WindowState = FormWindowState.Maximized;
 
         InitializeInsertControls();
         InitializeSelectControls();
