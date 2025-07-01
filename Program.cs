@@ -317,7 +317,7 @@ static class Program
             //Hash user's password
             string hashedPassword = HashPassword(password);
 
-            string query = "INSERT INTO my_schema.users (user_id,username, password_hash) VALUES (2,@newUser, @newUserPw)";
+            string query = "INSERT INTO my_schema.users (username, password_hash) VALUES (@newUser, @newUserPw)";
 
             commandInsert.CommandText = query;
             commandInsert.Parameters.AddWithValue("@newUser", username);
@@ -371,6 +371,7 @@ static class Program
         using NpgsqlConnection conn = GetFreshConnection_Postgres();
         using NpgsqlCommand command = conn.CreateCommand();
 
+        //Note: need to insert person_id
         string insertQuery = "INSERT INTO my_schema.person (first_name, last_name, phone, email, street, city, zip_code, country) VALUES (@f_name, @l_name, @phone, @email, @street, @city, @zip, @country)";
 
         command.CommandText = insertQuery;
