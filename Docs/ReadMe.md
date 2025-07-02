@@ -6,7 +6,7 @@ A more advanced version of the Winforms project.
 
 ## Includes
 
-- Salting & hashing of passwords
+- Salting & hashing of passwords (bCrypt)
 - User login feature
 - User privileges (hard coded for now)
 - Login attempts (logfile)
