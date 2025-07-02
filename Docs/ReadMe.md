@@ -11,5 +11,6 @@ A more advanced version of the Winforms project.
 - User privileges (hard coded for now)
 - Login attempts (logfile)
 - PostgreSQL support
+- Dockererized DB's
 
 [To do](TODO.md)

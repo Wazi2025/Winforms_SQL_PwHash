@@ -11,3 +11,4 @@
 - [x] Implement user privileges
 - [x] Implement login attempts (logfile)
 - [x] Implement PostgreSQL support
+- [x] Implement Docker
