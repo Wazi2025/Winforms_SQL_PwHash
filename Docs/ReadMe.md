@@ -1,6 +1,6 @@
 ![Console_to_WinForms](https://img.shields.io/badge/Console➡️WinForms-Ported-00C853)
 
-# Project "Winforms_SQL_PwHash"
+# Project "Winforms SQL PwHash"
 
 A more advanced version of the Winforms project.
 
