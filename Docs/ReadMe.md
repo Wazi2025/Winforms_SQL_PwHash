@@ -2,12 +2,12 @@
 
 # Project "Winforms_SQL_PwHash"
 
-This is a more advanced version using a login window and the ability to add more users based on user credentials (hard coded for now).<br>
+A more advanced version of the Winforms project.
 
 ## Includes
 
 - Salting & hashing of passwords
 - User login feature
-- User privileges
+- User privileges (hard coded for now)
 - Login attempts (logfile)
 - PostgreSQL support
