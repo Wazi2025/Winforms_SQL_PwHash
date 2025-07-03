@@ -67,7 +67,6 @@ static class Program
         //Set Mainform controls visibility based on user
         string checkUserQuery = "SELECT username FROM my_schema.users WHERE username = @user";
 
-        //Microsoft SQL version
         using SqlConnection conn = GetFreshConnection();
         using SqlCommand commandCheck = conn.CreateCommand();
         commandCheck.CommandText = checkUserQuery;
@@ -111,12 +110,10 @@ static class Program
     }
     static public bool TryLogin(string username, string password)
     {
-        //Microsoft SQL
         using SqlConnection conn = GetFreshConnection();
 
         string query = "SELECT password_hash FROM my_schema.users WHERE username = @user";
 
-        //Microsoft SQL
         using SqlCommand command = new SqlCommand(query, conn);
 
         command.Parameters.AddWithValue("@user", username);
@@ -206,8 +203,7 @@ static class Program
 
     static public DataTable SQLSelect(string whereFName, string whereLName)
     {
-        //By using the 'using' statement we make sure the DB connection is closed down after each use
-        //Microsoft
+        //By using the 'using' statement we make sure the DB connection is closed down after each use        
         using SqlConnection conn = GetFreshConnection();
 
         string query;
@@ -252,7 +248,6 @@ static class Program
         //Set Mainform controls visibility based on user
         string checkUserQuery = "SELECT username FROM my_schema.users WHERE username = @user";
 
-        //PostGreSQL version
         using NpgsqlConnection conn = GetFreshConnection_Postgres();
         using NpgsqlCommand commandCheck = conn.CreateCommand();
         commandCheck.CommandText = checkUserQuery;
@@ -268,12 +263,10 @@ static class Program
 
     static public bool TryLogin_Postgres(string username, string password)
     {
-        //PostgreSQL
         using NpgsqlConnection conn = GetFreshConnection_Postgres();
 
         string query = "SELECT password_hash FROM my_schema.users WHERE username = @user";
 
-        //PostgreSQL
         using NpgsqlCommand command = new NpgsqlCommand(query, conn);
 
         command.Parameters.AddWithValue("@user", username);
@@ -294,7 +287,6 @@ static class Program
         //Duplicate username check
         string checkDuplicateUserQuery = "SELECT username FROM my_schema.users WHERE username = @user";
 
-        //PosgreSQL
         using NpgsqlConnection conn = GetFreshConnection_Postgres();
         //Add the 'using' statement to SqlCommand object since it is not guaranteed to be automatically disposed when the SqlConnection it was created from is disposed
         using NpgsqlCommand commandCheck = conn.CreateCommand();
@@ -312,7 +304,6 @@ static class Program
             //
             //Again, we add the 'using' statement to SqlCommand object since it is not guaranteed to be automatically disposed when the SqlConnection it was created from is disposed
 
-            //PostgreSQL
             using NpgsqlCommand commandInsert = conn.CreateCommand();
 
             //Hash user's password
@@ -368,11 +359,9 @@ static class Program
     }
     static public void SQLInsert_Postgres(List<string> data)
     {
-        //PostgreSQL
         using NpgsqlConnection conn = GetFreshConnection_Postgres();
         using NpgsqlCommand command = conn.CreateCommand();
 
-        //Note: need to insert person_id
         string insertQuery = "INSERT INTO my_schema.person (first_name, last_name, phone, email, street, city, zip_code, country) VALUES (@f_name, @l_name, @phone, @email, @street, @city, @zip, @country)";
 
         command.CommandText = insertQuery;
