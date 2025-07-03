@@ -27,5 +27,5 @@ values ('Wazi','$2a$12$1btVx9WXHNswIemGLXx5uuNDlrJiR5ZMw.teOWgvI6Xu4Q0Ah39A6')
 insert into my_schema.person (first_name, last_name, email) 
 values 
 ('John','Hanson','test1'),
-('Bruce','Wayne','email')
+('Bruce','Wayne','email'),
 ('Alex','Murphy','ED-209')
