@@ -17,3 +17,14 @@ CREATE TABLE my_schema.person
     city text COLLATE pg_catalog."default",
     country text COLLATE pg_catalog."default"    
 )
+
+-- Add superuser 'Wazi' with pw 'test' if missing
+insert into my_schema.users (username,password_hash) 
+values ('Wazi','$2a$12$1btVx9WXHNswIemGLXx5uuNDlrJiR5ZMw.teOWgvI6Xu4Q0Ah39A6')
+
+-- Test data
+insert into my_schema.person (first_name, last_name, email) 
+values 
+('John','Hanson','test1'),
+('Bruce','Wayne','email')
+('Alex','Murphy','ED-209')

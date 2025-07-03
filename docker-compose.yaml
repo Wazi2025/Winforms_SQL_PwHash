@@ -34,6 +34,6 @@ services:
     volumes:
       - sqlvolume:/var/opt/mssql
 volumes:
-  postgres:
-  pgAdmin:
+  postgres-1:
+  pgAdmin-1:
   sqlvolume:

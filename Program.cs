@@ -65,7 +65,7 @@ static class Program
     public static bool UserPrivileges(string username)
     {
         //Set Mainform controls visibility based on user
-        string checkUserQuery = "SELECT username FROM users WHERE username = @user";
+        string checkUserQuery = "SELECT username FROM my_schema.users WHERE username = @user";
 
         //Microsoft SQL version
         using SqlConnection conn = GetFreshConnection();
@@ -114,7 +114,7 @@ static class Program
         //Microsoft SQL
         using SqlConnection conn = GetFreshConnection();
 
-        string query = "SELECT password_hash FROM users WHERE username = @user";
+        string query = "SELECT password_hash FROM my_schema.users WHERE username = @user";
 
         //Microsoft SQL
         using SqlCommand command = new SqlCommand(query, conn);
@@ -123,6 +123,7 @@ static class Program
 
         // Get the stored hash        
         object result = command.ExecuteScalar();
+
         if (result == null || result == DBNull.Value)
             return false;
 
@@ -135,7 +136,7 @@ static class Program
     static public bool SQLAddUser(string username, string password)
     {
         //Duplicate username check
-        string checkDuplicateUserQuery = "SELECT username FROM users WHERE username = @user";
+        string checkDuplicateUserQuery = "SELECT username FROM my_schema.users WHERE username = @user";
         using SqlConnection conn = GetFreshConnection();
         using SqlCommand commandCheck = conn.CreateCommand();
 
@@ -155,7 +156,7 @@ static class Program
             //Hash user's password
             string hashedPassword = HashPassword(password);
 
-            string query = "INSERT INTO users (username, password_hash) VALUES (@newUser, @newUserPw)";
+            string query = "INSERT INTO my_schema.users (username, password_hash) VALUES (@newUser, @newUserPw)";
 
             commandInsert.CommandText = query;
             commandInsert.Parameters.AddWithValue("@newUser", username);
@@ -177,7 +178,7 @@ static class Program
         using SqlConnection conn = GetFreshConnection();
         using SqlCommand command = conn.CreateCommand();
 
-        string insertQuery = "INSERT INTO person (first_name, last_name, phone, email, street, city, zip_code, country) VALUES (@f_name, @l_name, @phone, @email, @street, @city, @zip, @country)";
+        string insertQuery = "INSERT INTO my_schema.person (first_name, last_name, phone, email, street, city, zip_code, country) VALUES (@f_name, @l_name, @phone, @email, @street, @city, @zip, @country)";
         command.CommandText = insertQuery;
 
         //Note: Prolly add some sort of validation here
@@ -216,9 +217,9 @@ static class Program
         //command.Parameters.AddWithValue("@firstName", userInput);
         //If not, we risk SQL injection
         if (whereFName.IsNullOrEmpty())
-            query = "SELECT * FROM person";
+            query = "SELECT * FROM my_schema.person";
         else
-            query = "SELECT * FROM person WHERE first_name = @firstName";
+            query = "SELECT * FROM my_schema.person WHERE first_name = @firstName";
 
         using SqlCommand command = conn.CreateCommand();
 
